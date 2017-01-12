@@ -1,0 +1,9 @@
+{
+  "couchbase": {
+    "endpoint": "localhost:8091",
+    "bucket": "couchbase-api",
+    "hostname": "127.0.0.1",
+    "user": "Administrator",
+    "password": "password"
+  }
+}
