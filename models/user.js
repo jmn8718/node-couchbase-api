@@ -1,7 +1,4 @@
-var db = require('../db');
-var couchbase = require('couchbase');
-var ottoman = require('ottoman');
-ottoman.store = new ottoman.CbStoreAdapter(db.bucket, couchbase);
+var ottoman = require('../db').ottoman;
 
 var UserModel = ottoman.model('User', {
   userID: {
@@ -29,11 +26,11 @@ var UserModel = ottoman.model('User', {
   }
 });
 
-ottoman.ensureIndices(function(err) {
-  if (err) {
-    return console.error('Error ensure indices USER', err);
-  }
-  console.log('Ensure indices USER');
-});
+// ottoman.ensureIndices(function(err) {
+//   if (err) {
+//     return console.error('Error ensure indices USER', err);
+//   }
+//   console.log('Ensure indices USER');
+// });
 
 module.exports = UserModel;

@@ -17,6 +17,22 @@ var myBucket = myCluster.openBucket(bucket, function(err) {
   console.log('connected to bucket %s', bucket);
 });
 
+var ottoman = require('ottoman');
+ottoman.store = new ottoman.CbStoreAdapter(myBucket, couchbase);
+
 module.exports = {
-  bucket: myBucket
+  bucket: myBucket,
+  ottoman: ottoman
 };
+
+var User = require('../models/user');
+var Place = require('../models/place');
+
+ottoman.ensureIndices(function(err) {
+  if (err) {
+    console.log('failed to created neccessary indices', err);
+    return;
+  }
+
+  console.log('ottoman indices are ready for use!');
+});
