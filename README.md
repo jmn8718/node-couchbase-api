@@ -10,3 +10,9 @@ https://github.com/couchbaselabs/node-ottoman
 https://github.com/jmn8718/api-server/tree/master/src
 https://github.com/couchbaselabs/try-cb-nodejs
 https://www.thepolyglotdeveloper.com/2015/10/create-a-full-stack-app-using-node-js-couchbase-server/
+https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai
+
+## test
+http://ricostacruz.com/til/mocha-instanbul-coverage
+https://glebbahmutov.com/blog/how-to-correctly-unit-test-express-server/
+https://mochajs.org/

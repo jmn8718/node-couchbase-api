@@ -11,8 +11,9 @@ var should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('/GET users', () => {
+describe('/users', () => {
   before((done) => {
+    console.log('before')
     User.find({}, (err, results) => {
       if (err) {
         done(err);
@@ -55,14 +56,16 @@ describe('/GET users', () => {
           res.body.should.have.property('name');
           res.body.should.have.property('email');
           res.body.should.have.property('createdON');
-          done()
+    //       done()
+          console.log(res.body)
         });
-    });
-
-    it('it should GET all users', (done) => {
+    // });
+    //
+    // it('it should GET all users', (done) => {
       chai.request(server)
         .get('/api/v1/users')
         .end((err, res) => {
+          console.log(res.body)
           res.should.have.status(200);
           res.body.should.be.a('array');
           res.body.length.should.be.eql(1);

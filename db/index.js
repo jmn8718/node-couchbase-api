@@ -24,15 +24,15 @@ module.exports = {
   bucket: myBucket,
   ottoman: ottoman
 };
+//
+// var User = require('../models/user');
+// var Place = require('../models/place');
 
-var User = require('../models/user');
-var Place = require('../models/place');
-
-ottoman.ensureIndices(function(err) {
-  if (err) {
-    console.log('failed to created neccessary indices', err);
-    return;
-  }
-
-  console.log('ottoman indices are ready for use!');
-});
+// ottoman.ensureIndices(function(err) {
+//   if (err) {
+//     console.log('failed to created neccessary indices', err);
+//     return;
+//   }
+//
+//   console.log('ottoman indices are ready for use!');
+// });
