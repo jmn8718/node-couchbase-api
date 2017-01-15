@@ -1,18 +1,27 @@
-var ottoman = require('../db').ottoman;
+let ottoman = require('../db').ottoman;
+let validator = require('validator');
 
-var UserModel = ottoman.model('User', {
+let UserModel = ottoman.model('User', {
   userID: {
-    type:'string',
-    auto:'uuid',
-    readonly:true
+    type: 'string',
+    auto: 'uuid',
+    readonly: true
   },
   createdON: {
     type: 'Date',
-    default:new Date()
+    auto: new Date(),
+    readonly: true
   },
   name: 'string',
-  email: 'string',
   password: 'string',
+  email: {
+    type:'string',
+    validator: (email) => {
+      if (!validator.isEmail(email)) {
+        throw new Error('Phone number is invalid.');
+      }
+    }
+  },
 }, {
   index: {
     findByUserID:{				// ← refdoc index

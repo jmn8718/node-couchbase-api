@@ -1,6 +1,6 @@
-var ottoman = require('../db').ottoman;
+let ottoman = require('../db').ottoman;
 
-var PlaceModel = ottoman.model('Place', {
+let PlaceModel = ottoman.model('Place', {
   placeID: {
     type:'string',
     auto:'uuid',

@@ -1,33 +1,33 @@
-var config = require('./config');
-var couchbase = require('couchbase');
+let config = require('./config');
+let couchbase = require('couchbase');
 
-var endpoint = config.couchbase.endpoint;
-var bucket = config.couchbase.bucket;
-var myCluster = new couchbase.Cluster(endpoint, function(err) {
+let endpoint = config.couchbase.endpoint;
+let bucket = config.couchbase.bucket;
+let myCluster = new couchbase.Cluster(endpoint, function(err) {
   if (err) {
     console.log("Can't connect to couchbase: %s", err);
   }
   console.log('connected to db %s', endpoint);
 });
 
-var myBucket = myCluster.openBucket(bucket, function(err) {
+let myBucket = myCluster.openBucket(bucket, function(err) {
   if (err) {
     console.log("Can't connect to bucket: %s", err);
   }
   console.log('connected to bucket %s', bucket);
 });
 
-var ottoman = require('ottoman');
+let ottoman = require('ottoman');
 ottoman.store = new ottoman.CbStoreAdapter(myBucket, couchbase);
 
 module.exports = {
   bucket: myBucket,
   ottoman: ottoman
 };
-//
-// var User = require('../models/user');
-// var Place = require('../models/place');
 
+// let User = require('../models/user');
+// let Place = require('../models/place');
+//
 // ottoman.ensureIndices(function(err) {
 //   if (err) {
 //     console.log('failed to created neccessary indices', err);

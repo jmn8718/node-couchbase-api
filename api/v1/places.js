@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
-var Place = require('../../models/place');
+let Place = require('../../models/place');
 
 router.post('/', function(req, res, next) {
-  var place = new Place(req.body);
+  let place = new Place(req.body);
 
   place.save((err) => {
     if (err) {

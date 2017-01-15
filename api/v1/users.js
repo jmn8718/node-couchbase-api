@@ -1,50 +1,108 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
-var User = require('../../models/user');
+let User = require('../../models/user');
 
 router.post('/', function(req, res, next) {
-  var user = new User(req.body);
-  user.save(function(err) {
+  let user = new User(req.body);
+  user.save((err) => {
     if (err) {
-      console.log(err);
-      next(err);
+      return next({
+        status: 400,
+        message: err.message
+      });
     }
+    res.status(201);
     res.json(user);
   });
 });
 
 router.delete('/:id', function(req, res, next) {
-  User.findByUserID(req.params.id, function(err, user) {
+  User.findByUserID(req.params.id, function(err, users) {
     if (err) {
-      console.log(err);
-      next(err);
+      return next({
+        status: 400,
+        message: err.message
+      });
     }
-    user[0].remove(function(err) {
+    if (users.length === 0) {
+      return next({
+        status: 404,
+        message: "Not found"
+      });
+    }
+    let user = users[0];
+    user.remove((err) => {
       if (err) {
-        console.log(err);
-        next(err);
+        return next({
+          status: 400,
+          message: err.message
+        });
       }
-      res.json(user[0]);
+      res.json(users);
     });
   })
 });
 
-router.get('/:id', function(req, res, next) {
-  User.findByUserID(req.params.id, function(err, user) {
+router.put('/:id', function(req, res, next) {
+  User.findByUserID(req.params.id, (err, users) => {
     if (err) {
-      console.log(err);
-      next(err);
+      return next({
+        status: 400,
+        message: err.message
+      });
     }
-    res.json(user[0]);
+    if (users.length === 0) {
+      return next({
+        status: 404,
+        message: "Not found"
+      });
+    }
+    let user = users[0];
+    if (req.body.name) {
+      user.name = req.body.name;
+    }
+    if (req.body.email) {
+      user.name = req.body.email;
+    }
+
+    user.save((err) => {
+      if (err) {
+        return next({
+          status: 400,
+          message: err.message
+        });
+      }
+      res.json(user);
+    })
+  })
+});
+
+router.get('/:id', function(req, res, next) {
+  User.findByUserID(req.params.id, (err, users) => {
+    if (err) {
+      return next({
+        status: 404,
+        message: err.message
+      });
+    }
+    if (users.length === 0) {
+      return next({
+        status: 404,
+        message: "Not found"
+      });
+    }
+    res.json(users[0]);
   })
 });
 
 router.get('/', function(req, res, next) {
-  User.find(req.query, function(err, users) {
+  User.find(req.query, (err, users) => {
     if (err) {
-      console.log(err);
-      next(err);
+      return next({
+        status: 400,
+        message: err.message
+      });
     }
     res.json(users);
   });
