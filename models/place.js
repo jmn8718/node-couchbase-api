@@ -8,7 +8,7 @@ let PlaceModel = ottoman.model('Place', {
   },
   createdON: {
     type: 'Date',
-    default:new Date()
+    default: new Date()
   },
   name: 'string',
   categories: ['string'],
@@ -29,11 +29,11 @@ let PlaceModel = ottoman.model('Place', {
   }
 });
 
-// ottoman.ensureIndices(function(err) {
-//   if (err) {
-//     return console.error('Error ensure indices PLACE', err);
-//   }
-//   console.log('Ensure indices PLACE');
-// });
+ottoman.ensureIndices(function(err) {
+  if (err) {
+    return console.error('Error ensure indices PLACE', err);
+  }
+  console.log('Ensure indices PLACE');
+});
 
 module.exports = PlaceModel;

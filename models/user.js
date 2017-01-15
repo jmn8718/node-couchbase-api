@@ -9,24 +9,25 @@ let UserModel = ottoman.model('User', {
   },
   createdON: {
     type: 'Date',
-    auto: new Date(),
-    readonly: true
+    default: new Date()
   },
   name: 'string',
   password: 'string',
   email: {
-    type:'string',
+    type: 'string',
     validator: (email) => {
-      if (!validator.isEmail(email)) {
-        throw new Error('Phone number is invalid.');
+      if (!email) {
+        throw new Error('Required email');
+      } else if (!validator.isEmail(email)) {
+        throw new Error('Email is invalid.');
       }
     }
   },
 }, {
   index: {
     findByUserID:{				// ← refdoc index
-      by:'userID',
-      type:'refdoc'
+      by: 'userID',
+      type: 'refdoc'
     },
     findByEmail: {					// ← refdoc index
       by: 'email',
@@ -35,11 +36,11 @@ let UserModel = ottoman.model('User', {
   }
 });
 
-// ottoman.ensureIndices(function(err) {
-//   if (err) {
-//     return console.error('Error ensure indices USER', err);
-//   }
-//   console.log('Ensure indices USER');
-// });
+ottoman.ensureIndices(function(err) {
+  if (err) {
+    return console.error('Error ensure indices USER', err);
+  }
+  console.log('Ensure indices USER');
+});
 
 module.exports = UserModel;

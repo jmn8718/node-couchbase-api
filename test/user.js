@@ -13,12 +13,12 @@ chai.use(chaiHttp);
 
 describe('/users', () => {
   before((done) => {
-    console.log('before')
     User.find({}, (err, results) => {
       if (err) {
         done(err);
       }
       results.forEach((result) => {
+        console.log('remove', result)
         result.remove((err) => {
           if (err) {
             done(err);
@@ -27,6 +27,10 @@ describe('/users', () => {
       });
       done();
     })
+  });
+
+  beforeEach((done) => {
+    setTimeout(done, 500);
   });
 
   it('it should GET all users', (done) => {
@@ -50,27 +54,113 @@ describe('/users', () => {
         .post('/api/v1/users')
         .send(body)
         .end((err, res) => {
-          res.should.have.status(200);
+          res.should.have.status(201);
           res.body.should.be.a('object');
           res.body.should.have.property('userID');
           res.body.should.have.property('name');
           res.body.should.have.property('email');
           res.body.should.have.property('createdON');
-    //       done()
-          console.log(res.body)
+          done()
         });
-    // });
-    //
-    // it('it should GET all users', (done) => {
+    });
+
+    it('it should GET all users, have 1', (done) => {
       chai.request(server)
         .get('/api/v1/users')
         .end((err, res) => {
-          console.log(res.body)
           res.should.have.status(200);
           res.body.should.be.a('array');
           res.body.length.should.be.eql(1);
           done();
         });
     });
+
+    it('it should get a user', (done) => {
+      let user;
+      chai.request(server)
+        .get('/api/v1/users')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          res.body.length.should.be.eql(1);
+          user = res.body[0];
+          chai.request(server)
+            .get(`/api/v1/users/${user.userID}`)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.be.a('object');
+              res.body.should.have.property('userID');
+              res.body.userID.should.be.eql(user.userID);
+              res.body.should.have.property('name');
+              res.body.name.should.be.eql(user.name);
+              res.body.should.have.property('email');
+              res.body.email.should.be.eql(user.email);
+              done();
+            });
+        });
+    })
+
+    it('it should update a user', (done) => {
+      let user;
+      chai.request(server)
+        .get('/api/v1/users')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          res.body.length.should.be.eql(1);
+          user = res.body[0];
+
+          let newUser = {
+            name: 'user_test2',
+            email: 'email_test2@email.com'
+          };
+          chai.request(server)
+            .put(`/api/v1/users/${user.userID}`)
+            .send(newUser)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.be.a('object');
+              res.body.should.have.property('userID');
+              res.body.userID.should.be.eql(user.userID);
+              res.body.should.have.property('name');
+              res.body.name.should.be.eql(newUser.name);
+              res.body.should.have.property('email');
+              res.body.email.should.be.eql(newUser.email);
+              done()
+            });
+          });
+      })
+
+      it('it should remove a user', (done) => {
+        let user;
+        chai.request(server)
+          .get('/api/v1/users')
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            res.body.length.should.be.eql(1);
+            user = res.body[0];
+            chai.request(server)
+              .delete(`/api/v1/users/${user.userID}`)
+              .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('userID');
+                res.body.userID.should.be.eql(user.userID);
+                res.body.should.have.property('name');
+                res.body.name.should.be.eql(user.name);
+                res.body.should.have.property('email');
+                res.body.email.should.be.eql(user.email);
+                chai.request(server)
+                  .get('/api/v1/users')
+                  .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    res.body.length.should.be.eql(0);
+                    done();
+                  });
+              });
+          });
+    })
   })
 })

@@ -39,7 +39,7 @@ router.delete('/:id', function(req, res, next) {
           message: err.message
         });
       }
-      res.json(users);
+      res.json(user);
     });
   })
 });
@@ -63,7 +63,7 @@ router.put('/:id', function(req, res, next) {
       user.name = req.body.name;
     }
     if (req.body.email) {
-      user.name = req.body.email;
+      user.email = req.body.email;
     }
 
     user.save((err) => {
