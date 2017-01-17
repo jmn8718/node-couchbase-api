@@ -56,10 +56,9 @@ describe('/users', () => {
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
-          res.body.should.have.property('userID');
+          res.body.should.have.property('_id');
           res.body.should.have.property('name');
           res.body.should.have.property('email');
-          res.body.should.have.property('createdON');
           done()
         });
     });
@@ -85,12 +84,12 @@ describe('/users', () => {
           res.body.length.should.be.eql(1);
           user = res.body[0];
           chai.request(server)
-            .get(`/api/v1/users/${user.userID}`)
+            .get(`/api/v1/users/${user._id}`)
             .end((err, res) => {
               res.should.have.status(200);
               res.body.should.be.a('object');
-              res.body.should.have.property('userID');
-              res.body.userID.should.be.eql(user.userID);
+              res.body.should.have.property('_id');
+              res.body._id.should.be.eql(user._id);
               res.body.should.have.property('name');
               res.body.name.should.be.eql(user.name);
               res.body.should.have.property('email');
@@ -115,13 +114,13 @@ describe('/users', () => {
             email: 'email_test2@email.com'
           };
           chai.request(server)
-            .put(`/api/v1/users/${user.userID}`)
+            .put(`/api/v1/users/${user._id}`)
             .send(newUser)
             .end((err, res) => {
               res.should.have.status(200);
               res.body.should.be.a('object');
-              res.body.should.have.property('userID');
-              res.body.userID.should.be.eql(user.userID);
+              res.body.should.have.property('_id');
+              res.body._id.should.be.eql(user._id);
               res.body.should.have.property('name');
               res.body.name.should.be.eql(newUser.name);
               res.body.should.have.property('email');
@@ -141,12 +140,12 @@ describe('/users', () => {
             res.body.length.should.be.eql(1);
             user = res.body[0];
             chai.request(server)
-              .delete(`/api/v1/users/${user.userID}`)
+              .delete(`/api/v1/users/${user._id}`)
               .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
-                res.body.should.have.property('userID');
-                res.body.userID.should.be.eql(user.userID);
+                res.body.should.have.property('_id');
+                res.body._id.should.be.eql(user._id);
                 res.body.should.have.property('name');
                 res.body.name.should.be.eql(user.name);
                 res.body.should.have.property('email');

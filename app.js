@@ -46,6 +46,8 @@ app.use(function(err, req, res, next) {
   if (!err.status) {
     err.status = 500;
   }
+  err.error = true;
+  res.status(err.status);
   res.json(err);
 });
 

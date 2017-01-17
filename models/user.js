@@ -2,15 +2,6 @@ let ottoman = require('../db').ottoman;
 let validator = require('validator');
 
 let UserModel = ottoman.model('User', {
-  userID: {
-    type: 'string',
-    auto: 'uuid',
-    readonly: true
-  },
-  createdON: {
-    type: 'Date',
-    default: new Date()
-  },
   name: 'string',
   password: 'string',
   email: {
@@ -25,10 +16,6 @@ let UserModel = ottoman.model('User', {
   },
 }, {
   index: {
-    findByUserID:{				// ← refdoc index
-      by: 'userID',
-      type: 'refdoc'
-    },
     findByEmail: {					// ← refdoc index
       by: 'email',
       type: 'refdoc'

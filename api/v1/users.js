@@ -18,20 +18,13 @@ router.post('/', function(req, res, next) {
 });
 
 router.delete('/:id', function(req, res, next) {
-  User.findByUserID(req.params.id, function(err, users) {
+  User.getById(req.params.id, function(err, user) {
     if (err) {
       return next({
-        status: 400,
+        status: 404,
         message: err.message
       });
     }
-    if (users.length === 0) {
-      return next({
-        status: 404,
-        message: "Not found"
-      });
-    }
-    let user = users[0];
     user.remove((err) => {
       if (err) {
         return next({
@@ -45,20 +38,13 @@ router.delete('/:id', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
-  User.findByUserID(req.params.id, (err, users) => {
+  User.getById(req.params.id, (err, user) => {
     if (err) {
       return next({
-        status: 400,
+        status: 404,
         message: err.message
       });
     }
-    if (users.length === 0) {
-      return next({
-        status: 404,
-        message: "Not found"
-      });
-    }
-    let user = users[0];
     if (req.body.name) {
       user.name = req.body.name;
     }
@@ -79,20 +65,14 @@ router.put('/:id', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  User.findByUserID(req.params.id, (err, users) => {
+  User.getById(req.params.id, (err, user) => {
     if (err) {
       return next({
         status: 404,
         message: err.message
       });
     }
-    if (users.length === 0) {
-      return next({
-        status: 404,
-        message: "Not found"
-      });
-    }
-    res.json(users[0]);
+    res.json(user);
   })
 });
 
