@@ -1,30 +1,22 @@
 let ottoman = require('../db').ottoman;
+let User = require('./user');
 
 let PlaceModel = ottoman.model('Place', {
-  placeID: {
-    type:'string',
-    auto:'uuid',
-    readonly:true
+  name: {
+    type: 'string',
+    default: ''
   },
-  createdON: {
-    type: 'Date',
-    default: new Date()
-  },
-  name: 'string',
-  categories: ['string'],
+  categories: [ 'string' ],
   coordinates: {
     lat: 'number',
-    lng: 'number'
-  }
+    lng: 'number',
+  },
+  user: User
 }, {
   index: {
-    findByPlaceID:{				// ← refdoc index
-      by:'placeID',
-      type:'refdoc'
-    },
-    findByCategory: {					// ← refdoc index
-      by: 'categories',
-      type: 'refdoc'
+    findByUser: {
+      by: 'user',
+      type: 'n1ql'
     }
   }
 });

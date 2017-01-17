@@ -1,14 +1,21 @@
 let express = require('express');
 let router = express.Router();
 
-let Place = require('../../models/place');
+let Post = require('../../models/post');
 let User = require('../../models/user');
+let Place = require('../../models/place');
 
 router.post('/', function(req, res, next) {
   if (!req.body.user) {
     return next({
       status: 400,
       message: 'User is a required field'
+    })
+  }
+  if (!req.body.place) {
+    return next({
+      status: 400,
+      message: 'Place is a required field'
     })
   }
 
@@ -19,44 +26,66 @@ router.post('/', function(req, res, next) {
         message: err.message
       });
     }
-    let place = new Place(req.body);
-    place.user = user;
-    place.save((err) => {
+
+    Place.getById(req.body.place, (err, place) => {
       if (err) {
         return next({
-          status: 400,
+          status: 404,
           message: err.message
         });
       }
-      res.status(201);
-      res.json(place);
-    });
-  });
 
+      let post = new Post(req.body);
+      post.user = user;
+      post.place = place;
+      post.save((err) => {
+        if (err) {
+          return next({
+            status: 400,
+            message: err.message
+          });
+        }
+        res.status(201);
+        res.json(post);
+      });
+    })
+
+  });
+  let post = new Post(req.body);
+  post.save((err) => {
+    if (err) {
+      return next({
+        status: 400,
+        message: err.message
+      });
+    }
+    res.status(201);
+    res.json(post);
+  });
 });
 
 router.delete('/:id', function(req, res, next) {
-  Place.getById(req.params.id, function(err, place) {
+  Post.getById(req.params.id, function(err, post) {
     if (err) {
       return next({
         status: 404,
         message: err.message
       });
     }
-    place.remove((err) => {
+    post.remove((err) => {
       if (err) {
         return next({
           status: 400,
           message: err.message
         });
       }
-      res.json(place);
+      res.json(post);
     });
   })
 });
 
 router.put('/:id', function(req, res, next) {
-  Place.getById(req.params.id, (err, place) => {
+  Post.getById(req.params.id, (err, post) => {
     if (err) {
       return next({
         status: 404,
@@ -64,45 +93,45 @@ router.put('/:id', function(req, res, next) {
       });
     }
     if (req.body.name) {
-      place.name = req.body.name;
+      post.name = req.body.name;
     }
     if (req.body.email) {
-      place.email = req.body.email;
+      post.email = req.body.email;
     }
 
-    place.save((err) => {
+    post.save((err) => {
       if (err) {
         return next({
           status: 400,
           message: err.message
         });
       }
-      res.json(place);
+      res.json(post);
     })
   })
 });
 
 router.get('/:id', function(req, res, next) {
-  Place.getById(req.params.id, (err, place) => {
+  Post.getById(req.params.id, (err, post) => {
     if (err) {
       return next({
         status: 404,
         message: err.message
       });
     }
-    res.json(place);
+    res.json(post);
   })
 });
 
 router.get('/', function(req, res, next) {
-  Place.find(req.query, (err, places) => {
+  Post.find(req.query, (err, posts) => {
     if (err) {
       return next({
         status: 400,
         message: err.message
       });
     }
-    res.json(places);
+    res.json(posts);
   });
 });
 

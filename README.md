@@ -12,6 +12,10 @@ https://github.com/couchbaselabs/try-cb-nodejs
 https://www.thepolyglotdeveloper.com/2015/10/create-a-full-stack-app-using-node-js-couchbase-server/
 https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai
 
+https://www.sitepoint.com/local-authentication-using-passport-node-js/
+https://github.com/saintedlama/passport-local-mongoose
+
+
 ## test
 http://ricostacruz.com/til/mocha-instanbul-coverage
 https://glebbahmutov.com/blog/how-to-correctly-unit-test-express-server/
