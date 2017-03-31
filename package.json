@@ -8,6 +8,7 @@
     "coverage": "istanbul cover _mocha -- -R spec"
   },
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",
     "couchbase": "^2.3.0",

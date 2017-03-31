@@ -1,9 +1,17 @@
 let ottoman = require('../db').ottoman;
 let validator = require('validator');
+var bcrypt = require('bcrypt');
 
 let UserModel = ottoman.model('User', {
   name: 'string',
-  password: 'string',
+  password: {
+    type: 'string',
+    validator: (password) => {
+      if (!password) {
+        throw new Error('Required password');
+      }
+    }
+  },
   email: {
     type: 'string',
     validator: (email) => {
@@ -21,6 +29,25 @@ let UserModel = ottoman.model('User', {
       type: 'refdoc'
     }
   }
+});
+
+UserModel.pre("save", function(user, next) {
+  var u = user.toJSON();
+  console.log(typeof user)
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) {
+      return next(err);
+    }
+    bcrypt.hash(user.password, salt, function(err, hash) {
+      if (err) {
+        return next(err);
+      }
+      user.password = hash;
+      next();
+    });
+  });
+  // console.log('next', next)
+  // next();
 });
 
 ottoman.ensureIndices(function(err) {
